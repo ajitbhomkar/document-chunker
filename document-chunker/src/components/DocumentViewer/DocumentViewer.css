@@ -1,0 +1,54 @@
+.document-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  
+}
+
+.document-table th, .document-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.document-table th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.document-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.document-table tr:hover {
+  background-color: #ddd;
+}
+
+.document-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.pagination button:hover {
+  background-color: #ddd;
+}
