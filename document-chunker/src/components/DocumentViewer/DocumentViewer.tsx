@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './DocumentViewer.css'; // Import the CSS file
+import './DocumentViewer.css'; 
 
 interface Chunk {
   id: number;
