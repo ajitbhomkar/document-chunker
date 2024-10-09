@@ -1,16 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import './FileUpload.css'; // Import the CSS file
+import './FileUpload.css'; 
 
 const FileUpload: React.FC<{ onUploadComplete: (documentId: string) => void }> = ({ onUploadComplete }) => {
-  const [chunkSize, setChunkSize] = useState(1000); // Example value
-  const [chunkOverlap, setChunkOverlap] = useState(200); // Example value
-  const [sendToOpenAI, setSendToOpenAI] = useState(true); // Example value
+  const [chunkSize, setChunkSize] = useState(1000); 
+  const [chunkOverlap, setChunkOverlap] = useState(200); 
+  const [sendToOpenAI, setSendToOpenAI] = useState(true); 
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    console.log(acceptedFiles, "acceptedFiles"); // Debugging: Check acceptedFiles
-
+    console.log(acceptedFiles, "acceptedFiles"); 
     if (acceptedFiles.length === 0) {
       console.error("No files were accepted.");
       return;
@@ -20,7 +19,7 @@ const FileUpload: React.FC<{ onUploadComplete: (documentId: string) => void }> =
     formData.append('file', acceptedFiles[0]);
     formData.append('chunkSize', chunkSize.toString());
     formData.append('chunkOverlap', chunkOverlap.toString());
-    formData.append('sendToOpenAI', sendToOpenAI.toString()); // Include sendToOpenAI
+    formData.append('sendToOpenAI', sendToOpenAI.toString()); 
 
     // Log the contents of the FormData object
     Array.from(formData.entries()).forEach(([key, value]) => {
@@ -36,6 +35,11 @@ const FileUpload: React.FC<{ onUploadComplete: (documentId: string) => void }> =
       onUploadComplete(response.data.filename);
     }).catch(error => {
       console.error(error);
+      if (error.response && error.response.status === 400) {
+        alert(error.response.data.error); // Show alert message with the error
+      } else {
+        alert('An unexpected error occurred. Please try again.');
+      }
     });
   }, [chunkSize, chunkOverlap, sendToOpenAI, onUploadComplete]);
 
