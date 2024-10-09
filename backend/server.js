@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
@@ -45,21 +47,23 @@ app.post('/upload', upload.single('file'), async (req, res) => {
       let openAIData = null;
 
       // Optionally send chunk to OpenAI
-      // if (sendToOpenAI) {
-      //   try {
-      //     const openAIResponse = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
-      //       prompt: chunk,
-      //       max_tokens: 50
-      //     }, {
-      //       headers: {
-      //         'Authorization': `Bearer YOUR_OPENAI_API_KEY`
-      //       }
-      //     });
-      //     openAIData = openAIResponse.data;
-      //   } catch (error) {
-      //     console.error('Error sending chunk to OpenAI:', error);
-      //   }
-      // }
+      if (sendToOpenAI) {
+        console.log('Sending chunk to OpenAI:', chunk);
+        try {
+          const openAIResponse = await axios.post('https://api.openai.com/v1/completions', {
+            model: 'text-davinci-003', // Specify the model here
+            prompt: chunk,
+            max_tokens: 50
+          }, {
+            headers: {
+              'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+            }
+          });
+          openAIData = openAIResponse.data;
+        } catch (error) {
+          console.error('Error sending chunk to OpenAI:', error);
+        }
+      }
 
       await Chunk.create({ documentId: file.filename, chunkText: chunk, additionalParam, openAIData });
     }
